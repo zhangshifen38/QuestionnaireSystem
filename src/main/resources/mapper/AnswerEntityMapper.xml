@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sisp.demoproject.dao.AnswerEntityMapper">
+
+    <sql id="AnswerList">
+        id,question_id as "questionId", creation_date as "creationDate"
+    </sql>
+
+    <sql id="AnswerContentList">
+        id,answer_id as "answerId",option_id as "optionId", option_content as "optionContent"
+    </sql>
+
+    <insert id="insertAnswer" parameterType="com.sisp.demoproject.dao.entity.AnswerEntity">
+        insert into answer_info(id,question_id,creation_date)
+        values (#{id},#{questionId},#{creationDate})
+    </insert>
+
+    <insert id="insertAnswerContent" parameterType="com.sisp.demoproject.dao.entity.AnswerContentEntity">
+        insert into answer_content_info(id,answer_id,option_id,option_content)
+        values (#{id},#{answerId},#{optionId},#{optionContent})
+    </insert>
+
+    <select id="selectAnswerByQuestionId" parameterType="java.lang.String" resultType="com.sisp.demoproject.dao.entity.AnswerEntity">
+        select
+            <include refid="AnswerList"/>
+        from answer_info
+        where question_id = #{id}
+    </select>
+
+    <select id="selectAnswerContentByAnswerId" parameterType="java.lang.String" resultType="com.sisp.demoproject.dao.entity.AnswerContentEntity">
+        select
+            <include refid="AnswerContentList"/>
+        from answer_content_info
+        where answer_id = #{id}
+    </select>
+
+</mapper>

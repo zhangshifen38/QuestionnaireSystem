@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sisp.demoproject.dao.ProjectEntityMapper">
+    <resultMap id="BaseResultMap" type="com.sisp.demoproject.dao.entity.ProjectEntity">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="user_id" jdbcType="VARCHAR" property="userId" />
+        <result column="project_name" jdbcType="VARCHAR" property="projectName" />
+        <result column="project_content" jdbcType="VARCHAR" property="projectContent" />
+        <result column="created_by" jdbcType="CHAR" property="createdBy" />
+        <result column="creation_date" jdbcType="TIMESTAMP" property="creationDate" />
+        <result column="last_updated_by" jdbcType="CHAR" property="lastUpdatedBy" />
+        <result column="last_update_date" jdbcType="TIMESTAMP" property="lastUpdateDate" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, user_id as "userId", project_name as"projectName",project_content as "projectContent",
+            created_by as "createdBy", creation_date as "creationDate",
+            last_updated_by as "lastUpdatedBy", last_update_date as "lastUpdateDate"
+    </sql>
+
+    <select id="queryProjectList" parameterType="java.lang.String" resultType="com.sisp.demoproject.dao.entity.ProjectEntity">
+        select
+            <include refid="Base_Column_List"/>
+        from project_info;
+    </select>
+
+    <select id="selectProjectById" parameterType="java.lang.String" resultType="com.sisp.demoproject.dao.entity.ProjectEntity">
+        select
+            <include refid="Base_Column_List"/>
+        from project_info
+        where id=#{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectProjectbyName" parameterType="java.lang.String" resultType="com.sisp.demoproject.dao.entity.ProjectEntity">
+        select
+            <include refid="Base_Column_List"/>
+        from project_info
+        where project_name = #{name,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" parameterType="com.sisp.demoproject.dao.entity.ProjectEntity">
+        insert into project_info (id, user_id, project_name,project_content,created_by, creation_date,last_updated_by, last_update_date)
+        values (#{id,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR},#{projectName,jdbcType=VARCHAR},#{projectContent,jdbcType=VARCHAR},
+                #{createdBy,jdbcType=CHAR},#{creationDate,jdbcType=TIMESTAMP},
+                #{lastUpdatedBy,jdbcType=CHAR},#{lastUpdateDate,jdbcType=TIMESTAMP})
+    </insert>
+    
+    <delete id="deleteProjectById" parameterType="com.sisp.demoproject.dao.entity.ProjectEntity">
+        delete from project_info
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sisp.demoproject.dao.entity.ProjectEntity">
+        update project_info
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="projectName != null">
+                project_name = #{projectName,jdbcType=VARCHAR},
+            </if>
+            <if test="projectContent != null">
+                project_content = #{projectContent,jdbcType=VARCHAR},
+            </if>
+            <if test="createdBy != null">
+                created_by = #{createdBy,jdbcType=CHAR},
+            </if>
+            <if test="creationDate != null">
+                creation_date = #{creationDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdatedBy != null">
+                last_updated_by = #{lastUpdatedBy,jdbcType=CHAR},
+            </if>
+            <if test="lastUpdateDate != null">
+                last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+
+    
+</mapper>

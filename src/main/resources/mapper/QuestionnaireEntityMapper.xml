@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sisp.demoproject.dao.QuestionnaireEntityMapper">
+
+    <sql id="QuestionnaireList">
+        id, project_id as "projectId", status ,questionnaire_content as "questionnaireContent",questionnaire_name as "questionnaireName",
+            created_by as "createdBy", creation_date as "creationDate",questionnaire_type as "questionnaireType",start_time as "startTime",
+            stop_time as "stopTime", last_updated_by as "lastUpdatedBy", last_update_date as "lastUpdateDate"
+    </sql>
+
+    <sql id="QuestionList">
+        id, questionnaire_id as "questionnaireId", question_type as "questionType",question_name as "questionName",
+            left_title as "leftTitle",require_flag as "requireFlag"
+    </sql>
+
+    <sql id="OptionList">
+        id, question_id as "questionId",option_description as "optionDescription", option_score as "optionScore"
+    </sql>
+
+    <insert id="insertQuestionnaire" parameterType="com.sisp.demoproject.dao.entity.QuestionnaireEntity">
+        insert into
+            questionnaire_info(id,project_id,status,questionnaire_name,questionnaire_content,
+                               questionnaire_type,start_time,stop_time,created_by,creation_date,
+                               last_updated_by,last_update_date)
+        values
+            (#{id,jdbcType=VARCHAR},#{projectId,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},
+             #{questionnaireName,jdbcType=VARCHAR},#{questionnaireContent,jdbcType=VARCHAR},
+             #{questionnaireType,jdbcType=VARCHAR},#{startTime,jdbcType=TIMESTAMP},
+             #{stopTime,jdbcType=TIMESTAMP},#{createdBy,jdbcType=VARCHAR},#{creationDate,jdbcType=TIMESTAMP},
+             #{lastUpdatedBy,jdbcType=VARCHAR},#{lastUpdateDate,jdbcType=TIMESTAMP})
+    </insert>
+
+    <select id="selectQuestionnaireById" parameterType="java.lang.String">
+        select
+            <include refid="QuestionnaireList"/>
+        from questionnaire_info
+        where id=#{id,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteOptionByQuestionId" parameterType="java.lang.String">
+        delete from option_info
+        where question_id = #{id}
+    </delete>
+
+    <delete id="deleteQuestionByQuestionnaireId" parameterType="java.lang.String">
+        delete from question_info
+        where questionnaire_id = #{id}
+    </delete>
+
+    <insert id="insertQuestion" parameterType="com.sisp.demoproject.dao.entity.QuestionEntity">
+        insert into question_info(id,questionnaire_id,question_type,question_name,left_title,require_flag)
+        values
+            (#{id},#{questionnaireId},#{questionType},#{questionName},#{leftTitle},#{requireFlag,jdbcType=BOOLEAN})
+    </insert>
+
+    <insert id="insertOption" parameterType="com.sisp.demoproject.dao.entity.OptionEntity">
+        insert into option_info(id,question_id,option_description,option_score)
+        values
+            (#{id},#{questionId},#{optionDescription},#{optionScore})
+    </insert>
+
+    <update id="updateQuestionnaireById" parameterType="com.sisp.demoproject.dao.entity.QuestionnaireEntity">
+        update questionnaire_info
+        <set>
+            <if test="projectId != null">
+                project_id = #{projectId,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="questionnaireName != null">
+                questionnaire_name = #{questionnaireName,jdbcType=VARCHAR},
+            </if>
+            <if test="questionnaireContent != null">
+                questionnaire_content = #{questionnaireContent,jdbcType=VARCHAR},
+            </if>
+            <if test="questionnaireType != null">
+                questionnaire_type = #{questionnaireType,jdbcType=VARCHAR},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="stopTime != null">
+                stop_time = #{stopTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createdBy != null">
+                created_by = #{createdBy,jdbcType=CHAR},
+            </if>
+            <if test="creationDate != null">
+                creation_date = #{creationDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastUpdatedBy != null">
+                last_updated_by = #{lastUpdatedBy,jdbcType=CHAR},
+            </if>
+            <if test="lastUpdateDate != null">
+                last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="queryQuestionListByQuestionnaireId" parameterType="java.lang.String">
+        select
+            <include refid="QuestionList"/>
+        from question_info
+        where questionnaire_id = #{id}
+    </select>
+
+    <select id="selectQuestionnaireByProjectId" parameterType="java.lang.String">
+        select
+            <include refid="QuestionnaireList"/>
+        from questionnaire_info
+        where project_id = #{id}
+    </select>
+
+    <select id="queryOptionListByQuestionId" parameterType="java.lang.String">
+        select
+            <include refid="OptionList"/>
+        from option_info
+        where question_id = #{id}
+    </select>
+
+</mapper>
