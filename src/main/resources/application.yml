@@ -7,6 +7,17 @@ spring:
     username: root
     password: 2147483648
     driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: 172.19.48.229
+    port: 6379
+    database: 0
+    timeout: 5s
+    jedis:
+      pool:
+        max-active: 16
+        min-idle: 4
+        max-idle: 8
+        max-wait: 300ms
 
 mybatis:
   type-aliases-package: com.sisp.demoproject.dao.entity

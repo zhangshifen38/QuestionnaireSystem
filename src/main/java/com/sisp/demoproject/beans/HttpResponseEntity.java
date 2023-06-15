@@ -1,8 +1,9 @@
 package com.sisp.demoproject.beans;
 
+import java.io.Serializable;
 import java.security.PrivateKey;
 
-public class HttpResponseEntity {
+public class HttpResponseEntity implements Serializable {
     private String code;
     private Object data;
     private String message;

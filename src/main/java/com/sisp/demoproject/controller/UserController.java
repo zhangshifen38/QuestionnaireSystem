@@ -4,6 +4,7 @@ import com.sisp.demoproject.beans.HttpResponseEntity;
 import com.sisp.demoproject.dao.entity.UserEntity;
 import com.sisp.demoproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ public class UserController {
     /**
      * 用户登录
      */
+    @Cacheable(value = "userLoginCache",key = "#userEntity.username")
     @RequestMapping(value = "/userLogin", method = RequestMethod.POST, headers = "Accept=application/json")
     public HttpResponseEntity userLogin(@RequestBody UserEntity userEntity) {
         HttpResponseEntity httpResponseEntity = new HttpResponseEntity();

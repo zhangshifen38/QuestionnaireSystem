@@ -4,7 +4,9 @@ import com.sisp.demoproject.common.utils.UUIDUtil;
 import com.sisp.demoproject.dao.UserEntityMapper;
 import com.sisp.demoproject.dao.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.jws.soap.SOAPBinding;
 import java.util.List;
